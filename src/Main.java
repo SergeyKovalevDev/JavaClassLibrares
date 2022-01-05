@@ -10,6 +10,10 @@ public class Main {
     public static final int YEAR_INDEX = 2;
 
     public static void main(String[] args) {
+        timeCalculate();
+    }
+
+    private static void timeCalculate() {
         int[] dateOfBirth = inputDateOfBirth();
         Calendar calendar = new GregorianCalendar(dateOfBirth[YEAR_INDEX], dateOfBirth[MONTH_INDEX], dateOfBirth[DAY_OF_MONTH_INDEX]);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
