@@ -1,52 +1,52 @@
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Scanner;
+import java.util.Locale;
 
 public class Main {
-    public static final int DAY_OF_MONTH_INDEX = 0;
-    public static final int MONTH_INDEX = 1;
-    public static final int YEAR_INDEX = 2;
+    public static int[] randomDate;
+    public static Calendar calendar;
+    public static String datePattern = "dd MMMM yyyy";
+    public static String directory = "src";
+    public static String filename = "RandomName";
+
+    private static int[] getRandomDate() {
+        return new int[]{1970 + (int) (Math.random() * 50), (int) (Math.random() * 11), 1 + (int) (Math.random() * 30)};
+    }
+
+    private static long getMilliseconds(Calendar calendar) {
+        return calendar.getTime().getTime();
+    }
+
+    private static String getFormattedString(Calendar calendar, String datePattern) {
+        return new SimpleDateFormat(datePattern, Locale.ENGLISH).format(calendar.getTime());
+    }
+
+    private static String fileExistCheck(String directory, String filename) {
+        String retVal = "File " + filename + " in directory " + directory;
+        File file = new File(directory, filename);
+        return file.exists() ? retVal + " is exist\nAbsolute path: " + file.getAbsolutePath() : retVal + " is absent";
+    }
 
     public static void main(String[] args) {
-        timeCalculate();
-    }
-
-    private static void timeCalculate() {
-        int[] dateOfBirth = inputDateOfBirth();
-        Calendar calendar = new GregorianCalendar(dateOfBirth[YEAR_INDEX], dateOfBirth[MONTH_INDEX], dateOfBirth[DAY_OF_MONTH_INDEX]);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
-        System.out.println("Дата вашего рождения в формате паттерна dd MMMM yyyy - " + dateFormat.format(calendar.getTime()));
-        Date date = calendar.getTime();
-        System.out.println("С 1 января 1970 года до Вашего рождения прошло " + date.getTime() + " миллисекунд");
-    }
-
-    public static int[] inputDateOfBirth() {
-        Scanner scanner = new Scanner(System.in);
-        int dayOfMonth = 0, month = 0, year = 0;
-        boolean exit = false;
-        while (!exit) {
-            System.out.print("Введите день вашего рождения в виде двузначного числа ");
-            try {
-                dayOfMonth = scanner.nextInt();
-            } catch (Exception e) {
-                System.out.println("Ошибка при вводе, повторите ввод");
-            }
-            System.out.print("Введите месяц вашего рождения в виде двузначного числа ");
-            try {
-                month = scanner.nextInt();
-            } catch (Exception e) {
-                System.out.println("Ошибка при вводе, повторите ввод");
-            }
-            System.out.print("Введите год вашего рождения в виде четырехзначного числа ");
-            try {
-                year = scanner.nextInt();
-            } catch (Exception e) {
-                System.out.println("Ошибка при вводе, повторите ввод");
-            }
-            if (dayOfMonth != 0 && month != 0 && year != 0) exit = true;
-        }
-        return new int[] {dayOfMonth, --month, year};
+        randomDate = getRandomDate();
+        System.out.format("Randomly generated date: year - %d, month - %d, day - %d\n", randomDate[0], randomDate[1]+1, randomDate[2]);
+        calendar = new GregorianCalendar(randomDate[0], randomDate[1], randomDate[2]);
+        System.out.format("Date in pattern format %s: %s\n", datePattern, getFormattedString(calendar, datePattern));
+        System.out.format("From January 1, 1970 to this date has passed: %d milliseconds\n", getMilliseconds(calendar));
+        System.out.println(fileExistCheck(directory, filename));
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
